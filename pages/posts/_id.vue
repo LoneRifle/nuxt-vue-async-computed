@@ -11,14 +11,24 @@
 import axios from 'axios'
 
 export default {
+  asyncComputed: {
+    post: {
+      async get () {
+        // We can use async/await ES6 feature
+        let { data } = await axios.get(`https://jsonplaceholder.typicode.com/posts/${this.params.id}`)
+        return data
+      },
+      default: {
+        title: 'Loading...', body: 'Loading...'
+      }
+    }
+  },
   async asyncData ({ params }) {
-    // We can use async/await ES6 feature
-    let { data } = await axios.get(`https://jsonplaceholder.typicode.com/posts/${params.id}`)
-    return { post: data }
+    return { params }
   },
   head () {
     return {
-      title: this.post.title
+      title: this.post && this.post.title
     }
   }
 }
